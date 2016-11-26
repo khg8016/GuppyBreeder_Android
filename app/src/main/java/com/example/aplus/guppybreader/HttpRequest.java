@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -29,24 +30,24 @@ public class HttpRequest extends AsyncTask<Void,Void,Void>{
 
     protected void onPreExecute() {
         super.onPreExecute();
-        urlPath = "http://helloybz.dlinkddns.com:3331/temperature";
+        urlPath = "http://helloybz.dlinkddns.com:3331/temperature/";
     }
     protected Void  doInBackground(Void... voids){
         try{
            URL url = new URL(urlPath);
+
             HttpURLConnection con = (HttpURLConnection)url.openConnection();
             con.setDoInput(true);
             con.setDoOutput(true);
             con.setUseCaches(false);
             con.setRequestMethod("POST");
-            String data = URLEncoder.encode("msg", "UTF-8") + "=" + URLEncoder.encode("FOX", "UTF-8");
-
+            String data = URLEncoder.encode("msg", "UTF-8") + "=" + URLEncoder.encode("sibal", "UTF-8");
             OutputStream outputStream = con.getOutputStream();
 
             outputStream.write(data.getBytes());
 
             outputStream.flush();
-
+            int status = con.getResponseCode();
             BufferedReader rd =null;
             rd = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
             String line = null;
@@ -62,6 +63,8 @@ public class HttpRequest extends AsyncTask<Void,Void,Void>{
         }catch (UnsupportedEncodingException e){
             e.printStackTrace();
         }catch(IOException e){
+            e.printStackTrace();
+        }catch (Exception e){
             e.printStackTrace();
         }
 
